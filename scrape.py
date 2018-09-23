@@ -7,7 +7,20 @@ TARGET_URL = sys.argv[1]
 print("TARGET: %s" % TARGET_URL)
 
 src = requestwrap.get_json(TARGET_URL)
-product_urls = list(map(lambda obj: obj['url'], src['products']))
+src_page = int(src['meta']['page'])
+max_page = int(src['meta']['total_pages'])
+product_urls = []
+
+if src_page <= max_page:
+  for obj in src['products']:
+    product_urls.append(obj['url'])
+    
+  # get the next page if paginated
+  src_page += 1
+  src = requestwrap.get_json(TARGET_URL + "?page=%s" % src_page)
+
+print(product_urls)
+
 filename = datetime.datetime.today().strftime("%Y-%m-%d")
 
 with open("%s.csv" % filename, 'w') as csvfile:
