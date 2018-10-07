@@ -1,9 +1,10 @@
 import json
 from selenium import webdriver
 
+import logger
 
 def get_json(url):
-  print("GET: %s" % url)
+  logger.info("GET: %s" % url)
   options = webdriver.ChromeOptions()
   options.add_argument('headless')
 
@@ -15,10 +16,7 @@ def get_json(url):
   try:
     return json.loads(pre)
   except Exception as e:
-    log_err(e)
+    logger.err(e)
     return None
   finally:
     driver.close()
-
-def log_err(e):
-  print(e)

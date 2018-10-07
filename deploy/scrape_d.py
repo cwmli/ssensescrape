@@ -18,8 +18,6 @@ def get_content(target_url):
     src_page += 1
     src = requestwrap.get_json(target_url + "?page=%s" % src_page)
   
-  # print(product_urls)
-  
   filename = datetime.datetime.today().strftime("%Y-%m-%d")
   
   with open("/tmp/%s.csv" % filename, 'w') as csvfile:
