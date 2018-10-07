@@ -65,7 +65,12 @@ with open("%s.csv" % filename, 'w') as csvfile:
     for sizeObj in src['product']['sizes']:
       productSizes.append(sizeObj['name'])
       productSizeSkus.append(sizeObj['sku'])
-      productSizeInStock.append(sizeObj['inStock'])
+      productSizeInStock.append(str(sizeObj['inStock']))
+
+    # convert product(Sizes|SizeSkus|SizeInStock) to strings delimited by spaces
+    productSizes       = " ".join(productSizes)
+    productSizeSkus    = " ".join(productSizeSkus)
+    productSizeInStock = " ".join(productSizeInStock)
 
     writer.writerow([isSaleEnabled, isSaleSoon, isCaptchaEnabled, isSkuCaptchaProtected,
                   productSku, productName, productGender, 

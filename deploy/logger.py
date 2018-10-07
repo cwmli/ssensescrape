@@ -14,3 +14,6 @@ def err(e):
 
 def info(i):
   print(bcolors.OKBLUE + i + bcolors.ENDC)
+
+def success(i):
+  print(bcolors.OKGREEN + i + bcolors.ENDC)
