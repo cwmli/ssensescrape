@@ -4,7 +4,7 @@ import csv
 import sys
 import os
 
-BRANDS = os.environ['BRAND_LIST']
+BRANDS = os.environ['BRAND_LIST'].split()
 
 def get_content():
 
