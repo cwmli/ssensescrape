@@ -5,7 +5,7 @@
   - Add a *CloudWatch Event* trigger to set a `cron`
   
 2. Environment Variables
-  - Add `AWS_KEY, AWS_SECRET, REGION_NAME, S3_BUCKET, BRANDS` under the environment variables section (these values should be self explanatory)
+  - Add `AWS_KEY, AWS_SECRET, REGION_NAME, S3_BUCKET, BRAND_LIST` under the environment variables section (these values should be self explanatory)
   - Add another environment variable called `PATH` that points to `/var/task/bin` which is where selenium will locate chromedriver
   - Add an environment variable called `PYTHONPATH` that points to `/var/task/lib` which is where python will locate lib files
 3. Add `main.lambda_handler` to the handler section under Function code
