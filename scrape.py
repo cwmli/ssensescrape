@@ -3,27 +3,29 @@ import datetime
 import csv
 import sys
 
-TARGET_URL = sys.argv[1]
-print("TARGET: %s" % TARGET_URL)
-
-src = requestwrap.get_json(TARGET_URL)
-src_page = int(src['meta']['page'])
-max_page = int(src['meta']['total_pages'])
-product_urls = []
-
-if src_page <= max_page:
-  for obj in src['products']:
-    product_urls.append(obj['url'])
-    
-  # get the next page if paginated
-  src_page += 1
-  src = requestwrap.get_json(TARGET_URL + "?page=%s" % src_page)
-
-print(product_urls)
+BRANDS = sys.argv[1:]
+print("BRANDS: %s" % BRANDS)
 
 filename = datetime.datetime.today().strftime("%Y-%m-%d")
+product_urls = []
 
-with open("%s.csv" % filename, 'w') as csvfile:
+for brand in BRANDS:
+  target_url = 'https://www.ssense.com/en-ca/men/designers/%s.json' % brand
+  
+  src = requestwrap.get_json(target_url)
+  src_page = int(src['meta']['page'])
+  max_page = int(src['meta']['total_pages'])
+  
+  if src_page <= max_page:
+    for obj in src['products']:
+      product_urls.append(obj['url'])
+      
+    # get the next page if paginated
+    src_page += 1
+    src = requestwrap.get_json(target_url + "?page=%s" % src_page)
+  
+
+with open("/tmp/%s.csv" % filename, 'w') as csvfile:
   fieldnames = ['isSaleEnabled', 'isSaleSoon', 'isCaptchaEnabled', 'isSkuCaptchaProtected',
                 'productSku', 'productName', 'productGender', 
                 'productComposition', 'productCategory', 'productOrigin', 

@@ -6,14 +6,13 @@ import scrape_d
 import logger
 
 # Environment variables
-TARGET_URL = os.environ['TARGET_URL']
 AWS_KEY = os.environ['AWS_KEY']
 AWS_SECRET = os.environ['AWS_SECRET']
 REGION_NAME = os.environ['REGION_NAME']
 S3_BUCKET = os.environ['S3_BUCKET']
 
 def lambda_handler(event, context):
-  file = scrape_d.get_content(TARGET_URL)
+  file = scrape_d.get_content()
 
   # upload the csv to s3
   session = boto3.Session(

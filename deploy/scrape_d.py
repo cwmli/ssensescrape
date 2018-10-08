@@ -2,23 +2,30 @@ import requestwrap
 import datetime
 import csv
 import sys
+import os
 
-def get_content(target_url):
-  
-  src = requestwrap.get_json(target_url)
-  src_page = int(src['meta']['page'])
-  max_page = int(src['meta']['total_pages'])
-  product_urls = []
-  
-  if src_page <= max_page:
-    for obj in src['products']:
-      product_urls.append(obj['url'])
-      
-    # get the next page if paginated
-    src_page += 1
-    src = requestwrap.get_json(target_url + "?page=%s" % src_page)
-  
+BRANDS = os.environ['BRAND_LIST']
+
+def get_content():
+
   filename = datetime.datetime.today().strftime("%Y-%m-%d")
+  product_urls = []
+
+  for brand in BRANDS:
+    target_url = 'https://www.ssense.com/en-ca/men/designers/%s.json' % brand
+    
+    src = requestwrap.get_json(target_url)
+    src_page = int(src['meta']['page'])
+    max_page = int(src['meta']['total_pages'])
+    
+    if src_page <= max_page:
+      for obj in src['products']:
+        product_urls.append(obj['url'])
+        
+      # get the next page if paginated
+      src_page += 1
+      src = requestwrap.get_json(target_url + "?page=%s" % src_page)
+    
   
   with open("/tmp/%s.csv" % filename, 'w') as csvfile:
     fieldnames = ['isSaleEnabled', 'isSaleSoon', 'isCaptchaEnabled', 'isSkuCaptchaProtected',
@@ -75,4 +82,5 @@ def get_content(target_url):
                     productInStock, productBrand, productRegPrice,
                     productSalePrice, productDiscPrice, productCurrency,
                     productIsUniSize, productSizes, productSizeSkus, productSizeInStock])
+
   return filename
