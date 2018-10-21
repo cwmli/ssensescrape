@@ -29,7 +29,8 @@ def lambda_handler(event, context):
     logger.info('Uploading result of scrape to S3')
     bucket.upload_file(
       '/tmp/%s.csv' % file,
-      '%s.csv' % file)
+      '%s.csv' % file,
+      ExtraArgs={'ACL': 'public-read'})
     
     logger.success('Uploaded %s.csv to S3' % file)
   except ClientError as e:
