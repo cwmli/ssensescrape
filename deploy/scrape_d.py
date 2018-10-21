@@ -33,7 +33,7 @@ def get_content():
                   'productComposition', 'productCategory', 'productOrigin', 
                   'productInStock', 'productBrand', 'productRegPrice',
                   'productSalePrice', 'productDiscPrice', 'productCurrency',
-                  'productIsUniSize', 'size', 'sizeSku', 'sizeInStock']
+                  'productIsUniSize', 'size', 'sizeSku', 'sizeInStock', 'dateRun']
   
     writer = csv.writer(csvfile, dialect='excel')
     # Write header
@@ -81,6 +81,6 @@ def get_content():
                     productComposition, productCategory, productOrigin, 
                     productInStock, productBrand, productRegPrice,
                     productSalePrice, productDiscPrice, productCurrency,
-                    productIsUniSize, productSizes, productSizeSkus, productSizeInStock])
+                    productIsUniSize, productSizes, productSizeSkus, productSizeInStock, filename])
 
   return filename
