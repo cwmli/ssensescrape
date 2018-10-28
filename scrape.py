@@ -40,43 +40,46 @@ with open("/tmp/%s.csv" % filename, 'w') as csvfile:
   for url in product_urls:
     src = requestwrap.get_json("https://www.ssense.com/en-ca%s.json" % url)
     
-    isSaleEnabled         = src['context']['isSaleEnabled']
-    isSaleSoon            = src['context']['isSaleSoon']
-    isCaptchaEnabled      = src['context']['isCaptchaEnabled']
-    isSkuCaptchaProtected = src['context']['isSkuCaptchaProtected']
+    try:
+      isSaleEnabled         = src['context']['isSaleEnabled']
+      isSaleSoon            = src['context']['isSaleSoon']
+      isCaptchaEnabled      = src['context']['isCaptchaEnabled']
+      isSkuCaptchaProtected = src['context']['isSkuCaptchaProtected']
 
-    productSku            = src['product']['sku']
-    productName           = src['product']['name']
-    productGender         = src['product']['gender']
-    productComposition    = src['product']['composition']
-    productCategory       = src['product']['category']['name']
-    productOrigin         = src['product']['countryOfOrigin']
-    productInStock        = src['product']['inStock']
-    productBrand          = src['product']['brand']['name']
-    productRegPrice       = src['product']['price']['regular']
-    productSalePrice      = src['product']['price']['sale']
-    productDiscPrice      = src['product']['price']['discount']
-    productCurrency       = src['product']['price']['currency']
-    productIsUniSize      = src['product']['isUniSize']
+      productSku            = src['product']['sku']
+      productName           = src['product']['name']
+      productGender         = src['product']['gender']
+      productComposition    = src['product']['composition']
+      productCategory       = src['product']['category']['name']
+      productOrigin         = src['product']['countryOfOrigin']
+      productInStock        = src['product']['inStock']
+      productBrand          = src['product']['brand']['name']
+      productRegPrice       = src['product']['price']['regular']
+      productSalePrice      = src['product']['price']['sale']
+      productDiscPrice      = src['product']['price']['discount']
+      productCurrency       = src['product']['price']['currency']
+      productIsUniSize      = src['product']['isUniSize']
 
 
 
-    productSizes       = []
-    productSizeSkus    = []
-    productSizeInStock = []
-    for sizeObj in src['product']['sizes']:
-      productSizes.append(sizeObj['name'])
-      productSizeSkus.append(sizeObj['sku'])
-      productSizeInStock.append(str(sizeObj['inStock']))
+      productSizes       = []
+      productSizeSkus    = []
+      productSizeInStock = []
+      for sizeObj in src['product']['sizes']:
+        productSizes.append(sizeObj['name'])
+        productSizeSkus.append(sizeObj['sku'])
+        productSizeInStock.append(str(sizeObj['inStock']))
 
-    # convert product(Sizes|SizeSkus|SizeInStock) to strings delimited by spaces
-    productSizes       = " ".join(productSizes)
-    productSizeSkus    = " ".join(productSizeSkus)
-    productSizeInStock = " ".join(productSizeInStock)
+      # convert product(Sizes|SizeSkus|SizeInStock) to strings delimited by spaces
+      productSizes       = " ".join(productSizes)
+      productSizeSkus    = " ".join(productSizeSkus)
+      productSizeInStock = " ".join(productSizeInStock)
 
-    writer.writerow([isSaleEnabled, isSaleSoon, isCaptchaEnabled, isSkuCaptchaProtected,
-                  productSku, productName, productGender, 
-                  productComposition, productCategory, productOrigin, 
-                  productInStock, productBrand, productRegPrice,
-                  productSalePrice, productDiscPrice, productCurrency,
-                  productIsUniSize, productSizes, productSizeSkus, productSizeInStock])
+      writer.writerow([isSaleEnabled, isSaleSoon, isCaptchaEnabled, isSkuCaptchaProtected,
+                    productSku, productName, productGender, 
+                    productComposition, productCategory, productOrigin, 
+                    productInStock, productBrand, productRegPrice,
+                    productSalePrice, productDiscPrice, productCurrency,
+                    productIsUniSize, productSizes, productSizeSkus, productSizeInStock])
+    except KeyError:
+      continue
