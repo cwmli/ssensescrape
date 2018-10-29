@@ -4,12 +4,15 @@ import csv
 import sys
 import os
 
+import logger
+
 BRANDS = os.environ['BRAND_LIST'].split()
 
 def get_content():
 
   filename = datetime.datetime.today().strftime("%Y-%m-%d")
   product_urls = []
+  errors = []
 
   for brand in BRANDS:
     target_url = 'https://www.ssense.com/en-ca/men/designers/%s.json' % brand
@@ -84,6 +87,10 @@ def get_content():
                       productSalePrice, productDiscPrice, productCurrency,
                       productIsUniSize, productSizes, productSizeSkus, productSizeInStock, filename])
       except KeyError:
+        errors.append("ERROR: could not retrieve product details for %s" %s url)
         continue
-        
+
+  for e in errors:
+    logger.err(e)
+
   return filename
